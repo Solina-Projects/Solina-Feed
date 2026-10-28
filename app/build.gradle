@@ -1,0 +1,60 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Release signing comes from the environment (GitHub Actions secrets). It is never stored in git.
+def keystorePath = System.getenv('KEYSTORE_FILE')
+
+android {
+    namespace 'com.solina.feed'
+    buildToolsVersion "37.0.0"
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 2
+        }
+    }
+
+    defaultConfig {
+        applicationId 'com.solina.feed'
+        minSdk = 26
+        targetSdk = 37
+        versionCode 1
+        versionName '0.1.0'
+    }
+
+    signingConfigs {
+        solina {
+            if (keystorePath) {
+                storeFile file(keystorePath)
+                storePassword System.getenv('KEYSTORE_PASSWORD')
+                keyAlias System.getenv('KEY_ALIAS')
+                keyPassword System.getenv('KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            if (keystorePath) {
+                signingConfig signingConfigs.solina
+            }
+        }
+        release {
+            minifyEnabled false
+            signingConfig keystorePath ? signingConfigs.solina : signingConfigs.debug
+        }
+    }
+
+    buildFeatures {
+        aidl true
+    }
+
+    compileOptions {
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
+    }
+
+    lint {
+        abortOnError false
+    }
+}
