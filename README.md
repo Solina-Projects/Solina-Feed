@@ -1,5 +1,9 @@
 # Solina Feed
 
+<p align="center">
+  <img src="docs/icon-512.png" alt="Solina Feed icon" width="120" height="120">
+</p>
+
 The feed page (swipe right on the home screen) for **Solina Launcher**.
 
 - Jalali date and fixed solar-calendar occasions
